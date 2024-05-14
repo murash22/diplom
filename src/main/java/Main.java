@@ -10,10 +10,6 @@ public class Main {
         Locale.setDefault(new Locale("ru", "RU"));
         MainWindow window = new MainWindow("Дипломный проект");
         SwingUtilities.invokeLater(() -> window.display(600, 400));
-//        algorithm.Algorithm alg = new algorithm.Algorithm("ecb");
-//        byte[] encrypted = alg.encrypt("123".getBytes());
-//        System.out.println(Arrays.toString(encrypted));
-//        System.out.println(new String(alg.decrypt(encrypted)));
-//        System.out.println(Arrays.toString(alg.decrypt(encrypted)));
     }
+
 }

@@ -4,11 +4,14 @@ import utils.Conversions;
 import widgets.HexTextField;
 import algorithm.*;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.*;
@@ -17,7 +20,7 @@ import java.util.concurrent.ExecutionException;
 public class VisualizationCBCAttack extends JPanel {
     Algorithm algorithm;
     int blockSize;
-    byte[] cipherText;
+    public byte[] cipherText;
 
     JPanel mainContainer;
 
@@ -26,12 +29,17 @@ public class VisualizationCBCAttack extends JPanel {
 
 
     JLabel createXORLabel() {
-//        ImageIcon imageIcon = new ImageIcon("src/main/resources/files/images/xor.png");
-//        Image image = imageIcon.getImage().getScaledInstance(35, 35, Image.SCALE_DEFAULT);
-//        return new JLabel(new ImageIcon(image));
-        JLabel label = new JLabel("XOR");
-        label.setFont(new Font("Times New Roman", Font.PLAIN, 25));
-        return label;
+        try {
+            BufferedImage buff = ImageIO.read(Objects.requireNonNull(getClass().getResource("/files/images/xor.png")));
+            ImageIcon imageIcon = new ImageIcon(buff);
+            Image image = imageIcon.getImage().getScaledInstance(35, 35, Image.SCALE_DEFAULT);
+            return new JLabel(new ImageIcon(image));
+        } catch (IOException e) {
+            e.printStackTrace();
+            JLabel label = new JLabel("XOR");
+            label.setFont(new Font("Times New Roman", Font.PLAIN, 25));
+            return label;
+        }
     }
 
     JPanel createBlock(String name, boolean isEditable, List<String> initialData) {
@@ -332,12 +340,8 @@ public class VisualizationCBCAttack extends JPanel {
         this.blockSize = alg.BLOCK_SIZE;
         mainContainer = createMainContainer();
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-//        this.target = owner;
-//        setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
-//        getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
         if (isHelperNeeded) {
             add(createHelperContainer());
-//            getContentPane().add(createHelperContainer());
         }
         add(mainContainer);
         setVisible(true);
@@ -360,11 +364,6 @@ public class VisualizationCBCAttack extends JPanel {
         return c;
     }
 
-//    JLabel createLabel(String name, int fontSize) {
-//        JLabel label = new JLabel(name);
-//        label.setFont(new Font("Times New Roman", Font.PLAIN, fontSize));
-//        return label;
-//    }
 
     void copyBlockText(String from, String to) {
         Component[] src = blocks.get(from).getComponents();
@@ -422,9 +421,39 @@ public class VisualizationCBCAttack extends JPanel {
 
     class ServerContainer extends JPanel {
 
-        private final JLabel okLabel;
-        private final JLabel errorLabel;
+        private JLabel okLabel;
+        private JLabel errorLabel;
         private final JPanel answerContainer;
+
+        void loadImages() {
+            try {
+                BufferedImage okBuff = ImageIO.read(Objects.requireNonNull(getClass().getResource("/files/images/ok.png")));
+                ImageIcon okImageIcon = new ImageIcon(okBuff);
+                Image okImage = okImageIcon.getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT);
+                okLabel = new JLabel(new ImageIcon(okImage));
+            } catch (Exception e) {
+//                e.printStackTrace();
+                System.err.println("Не удалось загурзить изображение для \"ответ от сервер\"");
+                JLabel label1 = new JLabel("OK");
+                label1.setFont(new Font("Times New Roman", Font.PLAIN, 35));
+                label1.setForeground(Color.GREEN);
+                okLabel = label1;
+            }
+
+            try {
+                BufferedImage errorBuff = ImageIO.read(Objects.requireNonNull(getClass().getResource("/files/images/error.png")));
+                ImageIcon errorImageIcon = new ImageIcon(errorBuff);
+                Image errorImage = errorImageIcon.getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT);
+                errorLabel = new JLabel(new ImageIcon(errorImage));
+            } catch (Exception e) {
+//                e.printStackTrace();
+                System.err.println("Не удалось загурзить изображение для \"ответ от сервер\"");
+                JLabel label1 = new JLabel("ERROR");
+                label1.setFont(new Font("Times New Roman", Font.PLAIN, 35));
+                label1.setForeground(Color.RED);
+                errorLabel = label1;
+            }
+        }
 
         ServerContainer() {
             setLayout(new FlowLayout());
@@ -435,14 +464,8 @@ public class VisualizationCBCAttack extends JPanel {
             emptyLabel.setFont(new Font("Times New Roman", Font.PLAIN, 25));
             CompoundBorder answerBorder = new CompoundBorder(new LineBorder(Color.BLACK, 5), new EmptyBorder(10, 10, 10, 10));
             emptyLabel.setBorder(new CompoundBorder(new LineBorder(Color.BLACK, 5), new EmptyBorder(35, 35, 35, 35)));
-
-            ImageIcon okImageIcon = new ImageIcon("src/main/resources/files/images/ok.png");
-            ImageIcon errorImageIcon = new ImageIcon("src/main/resources/files/images/error.png");
-            Image okImage = okImageIcon.getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT);
-            Image errorImage = errorImageIcon.getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT);
-            okLabel = new JLabel(new ImageIcon(okImage));
+            loadImages();
             okLabel.setBorder(answerBorder);
-            errorLabel = new JLabel(new ImageIcon(errorImage));
             errorLabel.setBorder(answerBorder);
             answerContainer.add(emptyLabel);
 

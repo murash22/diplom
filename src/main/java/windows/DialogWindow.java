@@ -10,12 +10,15 @@ import java.util.List;
 public class DialogWindow {
 
     private static DialogWindow instance;
+    public enum AttackType{
+        CBC, ECB
+    }
 
-    HashMap<String, String[]> secretVariants;
+    HashMap<AttackType, String[]> secretVariants;
     private DialogWindow() {
         secretVariants = new HashMap<>();
-        secretVariants.put("ecb", secretVariantsECB);
-        secretVariants.put("cbc", secretVariantsCBC);
+        secretVariants.put(AttackType.ECB, secretVariantsECB);
+        secretVariants.put(AttackType.CBC, secretVariantsCBC);
     }
 
     public static DialogWindow get() {
@@ -25,7 +28,7 @@ public class DialogWindow {
         return instance;
     }
 
-    public byte[] visualizationDialog(String name, String type) {
+    public byte[] visualizationDialog(String name, AttackType type) {
         IntegerTextField variant = new IntegerTextField(2);
 
         List<JComponent> inputs = new ArrayList<>(

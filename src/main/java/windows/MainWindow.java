@@ -20,7 +20,7 @@ public class MainWindow extends JFrame {
         JButton ecbAttackBtn = new JButton("Атака на режим простой замены");
         ecbAttackBtn.setFont(new Font("Times New Roman", Font.PLAIN, 20));
         ecbAttackBtn.addActionListener(e -> {
-            byte[] input = DialogWindow.get().visualizationDialog("Атака на режим простой замены", "ecb");
+            byte[] input = DialogWindow.get().visualizationDialog("Атака на режим простой замены", DialogWindow.AttackType.ECB);
             if (input == null) return;
             JDialog d = new JDialog(this, "Атака на режим простой замены", true);
             Algorithm alg = new Algorithm("ECB");
@@ -32,7 +32,7 @@ public class MainWindow extends JFrame {
         JButton cbcAttackBtn = new JButton("Атака на режим простой замены с зацеплением");
         cbcAttackBtn.setFont(new Font("Times New Roman", Font.PLAIN, 20));
         cbcAttackBtn.addActionListener(e -> {
-            byte[] input = DialogWindow.get().visualizationDialog("Атака на режим простой замены с зацеплением", "cbc");
+            byte[] input = DialogWindow.get().visualizationDialog("Атака на режим простой замены с зацеплением", DialogWindow.AttackType.CBC);
             if (input == null) return;
             JDialog d = new JDialog(this, "Атака на режим простой замены с зацеплением", true);
             Algorithm alg = new Algorithm("CBC");

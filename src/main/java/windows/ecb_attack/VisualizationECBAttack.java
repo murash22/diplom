@@ -139,7 +139,6 @@ public class VisualizationECBAttack extends JPanel {
         c.add(serverContainer, gbc);
 
         sendBtn.addActionListener(e -> {
-            System.out.println(getSize().getWidth() + " - " + getSize().getHeight());
             JTextArea tf = textAreas.get("prefixField");
             if (tf.getText().length() == 0) {
                 JOptionPane.showMessageDialog(null, "Нельзя отправить пустые данные.");

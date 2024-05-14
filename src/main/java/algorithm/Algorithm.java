@@ -11,6 +11,7 @@ public class Algorithm {
     private SecretKey key;
     private Cipher ecnCipher;
     private Cipher decCipher;
+//    private IvParameterSpec IV = new IvParameterSpec(new byte[] {0x77, (byte) 0xAA, (byte) 0x88, (byte) 0x99, 0x01, 0x43, (byte) 0x85, 0x67});
     public final int BLOCK_SIZE = 8;
 
     public Algorithm(String mode) {
@@ -35,7 +36,6 @@ public class Algorithm {
     public byte[] encrypt(byte[] plaintext) {
         byte[] padded = pad(plaintext);
         try {
-            ecnCipher.init(Cipher.ENCRYPT_MODE, key);
             return ecnCipher.doFinal(padded);
         } catch (Exception e) {
             System.out.println(e.getMessage());
